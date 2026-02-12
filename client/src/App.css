@@ -1,11 +1,16 @@
 :root {
-  --bg: #ffffff;
-  --text: #0b0d12;
-  --muted: rgba(11, 13, 18, 0.62);
-  --line: rgba(15, 20, 30, 0.12);
-  --soft: rgba(15, 20, 30, 0.06);
-  --shadow: 0 12px 30px rgba(15, 20, 30, 0.08);
-  --r: 18px;
+  --bg: #ece9df;
+  --panel: #f5f2ea;
+  --panel-2: #e9e4d8;
+  --text: #101114;
+  --muted: #4f5056;
+  --line: #16181d;
+  --accent: #ff6a00;
+  --accent-soft: #ffd2b1;
+  --shadow: 7px 7px 0 #17181d;
+  --radius: 10px;
+  --sans: "Avenir Next Condensed", "Helvetica Neue", "Arial Narrow", "Franklin Gothic Medium", sans-serif;
+  --mono: "SF Mono", "Roboto Mono", "Menlo", "Consolas", monospace;
 }
 
 * {
@@ -17,10 +22,14 @@ body {
   margin: 0;
   padding: 0;
   color: var(--text);
-  background: radial-gradient(900px 520px at 15% 15%, rgba(0, 122, 255, 0.10) 0%, transparent 55%),
-    radial-gradient(900px 520px at 85% 10%, rgba(175, 82, 222, 0.08) 0%, transparent 55%),
+  font-family: var(--sans);
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.045) 1px, transparent 1px),
+    radial-gradient(circle at 88% 10%, #fff3e9 0%, transparent 44%),
+    radial-gradient(circle at 10% 88%, #f3efe3 0%, transparent 40%),
     var(--bg);
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  background-size: 24px 24px, 24px 24px, auto, auto, auto;
 }
 
 a {
@@ -33,92 +42,256 @@ a {
 }
 
 .wrap {
-  max-width: 980px;
+  max-width: 1120px;
   margin: 0 auto;
-  padding: 26px;
-  transition: opacity 280ms ease, transform 280ms ease;
+  padding: 28px;
+  transition: opacity 220ms ease, transform 220ms ease;
   will-change: opacity, transform;
 }
 
 .wrapTransition {
-  opacity: 0.45;
-  transform: translateY(18px);
+  opacity: 0.6;
+  transform: translateY(10px);
 }
 
 .hero {
-  padding: 44px 0 18px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 254px;
+  align-items: start;
+  gap: 22px;
+  padding: 38px 0 18px;
+}
+
+.heroMain {
+  min-width: 0;
+}
+
+.heroRail {
+  display: grid;
+  gap: 12px;
 }
 
 .hero h1 {
   margin: 0;
-  font-size: 48px;
-  line-height: 1.05;
-  letter-spacing: -1px;
+  font-size: clamp(76px, 12.5vw, 146px);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  font-weight: 900;
 }
 
-.lede {
-  margin: 14px 0 0;
+.heroName {
+  display: inline-block;
+  animation: namePulse 3000ms steps(2, end) infinite;
+}
+
+@keyframes namePulse {
+  0%,
+  100% {
+    transform: translateY(0);
+    text-shadow: 0 0 0 transparent;
+  }
+  50% {
+    transform: translateY(-2px);
+    text-shadow: 3px 3px 0 var(--accent-soft);
+  }
+}
+
+.weatherCard {
+  width: 100%;
+  padding: 14px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.38), rgba(175, 214, 255, 0.34)),
+    rgba(238, 245, 255, 0.52);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: railFloat 5200ms ease-in-out infinite;
+}
+
+.spotifyCard {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  animation: railFloat 5200ms ease-in-out 700ms infinite;
+}
+
+@keyframes railFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+    box-shadow: var(--shadow);
+  }
+  50% {
+    transform: translateY(-4px);
+    box-shadow: 9px 11px 0 #17181d;
+  }
+}
+
+.spotifyTitle {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.spotifyTrack {
+  margin-top: 8px;
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.spotifyArtist {
+  margin-top: 4px;
+  font-size: 14px;
   color: var(--muted);
-  line-height: 1.7;
-  max-width: 62ch;
-  font-size: 16px;
 }
 
-.ledeLinks {
+.spotifyLink {
+  margin-top: 12px;
   display: inline-flex;
+  align-items: center;
+  padding: 8px 10px;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background: #ebe5d6;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 3px 3px 0 #17181d;
+}
+
+.weatherTitle {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #335a81;
+}
+
+.weatherNow {
+  margin-top: 8px;
+  font-size: 38px;
+  font-weight: 900;
+  line-height: 1;
+  color: #194a78;
+}
+
+.weatherNowWrap {
+  margin-top: 4px;
+  display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.ledeLinks a {
-  color: var(--text);
+.weatherNowIcon {
+  font-size: 40px;
+  line-height: 1;
+}
+
+.weatherNowTemp {
+  font-size: 46px;
+  line-height: 1;
+  font-weight: 900;
+  color: #194a78;
+}
+
+.weatherDesc {
+  margin-top: 6px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #2c5e8f;
+}
+
+.weatherRange {
+  margin-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border: 1px solid #2c5e8f;
+  border-radius: 999px;
+  background: rgba(177, 217, 255, 0.32);
+  color: #1f4f80;
+  font-family: var(--mono);
+  font-size: 11px;
   font-weight: 700;
 }
 
-.ledeLinks a:hover {
-  text-decoration: underline;
+.lede {
+  margin: 18px 0 0;
+  max-width: 56ch;
+  color: var(--muted);
+  line-height: 1.55;
+  font-size: 18px;
 }
 
 .ctaRow {
-  margin-top: 18px;
+  margin-top: 20px;
   display: flex;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
-.btn {
-  padding: 12px 14px;
-  border-radius: 16px;
-  border: 1px solid rgba(15, 20, 30, 0.14);
-  background: rgba(15, 20, 30, 0.92);
-  color: white;
-  font-weight: 800;
-  cursor: pointer;
-  box-shadow: 0 14px 30px rgba(15, 20, 30, 0.10);
+.btn,
+.btnGhost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 2px solid var(--line);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  box-shadow: 4px 4px 0 #17181d;
+  transition: transform 120ms ease, box-shadow 120ms ease;
 }
 
-.btn:hover {
-  background: rgba(15, 20, 30, 0.98);
+.btn {
+  background: var(--line);
+  color: #f8f5ee;
 }
 
 .btnGhost {
-  padding: 12px 14px;
-  border-radius: 16px;
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--panel);
   color: var(--text);
-  font-weight: 800;
-  box-shadow: 0 14px 26px rgba(15, 20, 30, 0.06);
 }
 
+.btn:hover,
 .btnGhost:hover {
-  background: rgba(255, 255, 255, 0.98);
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 #17181d;
 }
 
 .divider {
-  margin-top: 22px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--line), transparent);
+  margin-top: 24px;
+  height: 5px;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      var(--accent) 0,
+      var(--accent) 24px,
+      #ffc38e 24px,
+      #ffc38e 48px
+    );
 }
 
 .section {
@@ -127,101 +300,104 @@ a {
 
 .sectionHead h2 {
   margin: 0;
-  font-size: 26px;
-  letter-spacing: -0.5px;
-}
-
-.sectionHead p {
-  margin: 8px 0 0;
-  color: var(--muted);
-  line-height: 1.6;
+  display: inline-block;
+  padding: 4px 10px;
+  border: 2px solid var(--line);
+  border-radius: 6px;
+  background: var(--panel-2);
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 14px;
 }
 
 .projList {
   margin-top: 14px;
   display: grid;
-  gap: 10px;
+  gap: 12px;
 }
 
-.proj {
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.85);
-  border-radius: var(--r);
+.proj,
+.about {
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
   padding: 14px;
   box-shadow: var(--shadow);
 }
 
 .projTitle {
   font-weight: 900;
-  letter-spacing: -0.2px;
+  letter-spacing: -0.01em;
+  font-size: 22px;
 }
 
-.projDesc {
+.projDesc,
+.about p {
   margin-top: 8px;
   color: var(--muted);
   line-height: 1.6;
+  font-size: 16px;
 }
 
 .about {
   margin-top: 12px;
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.85);
-  border-radius: var(--r);
-  padding: 16px;
-  box-shadow: var(--shadow);
 }
 
 .about p {
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.8;
+  margin-top: 0;
 }
 
 .skills {
-  margin-top: 12px;
+  margin-top: 14px;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 
 .skill {
-  padding: 9px 10px;
+  padding: 7px 10px;
   border-radius: 999px;
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.92);
-  color: rgba(11, 13, 18, 0.74);
-  font-size: 13px;
+  background: #ebe5d6;
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .linksRow {
   margin-top: 14px;
   display: flex;
-  gap: 14px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
 .link {
-  padding: 12px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.92);
-  color: var(--text);
-  box-shadow: 0 10px 22px rgba(15, 20, 30, 0.06);
-}
-
-.link:hover {
-  background: rgba(255, 255, 255, 0.98);
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 2px solid var(--line);
+  background: var(--panel);
+  font-family: var(--mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  box-shadow: 4px 4px 0 #17181d;
 }
 
 .footer {
-  margin-top: 34px;
-  padding: 18px 0 44px;
+  margin-top: 38px;
+  padding: 18px 0 42px;
   display: flex;
   justify-content: space-between;
   gap: 12px;
   flex-wrap: wrap;
-  border-top: 1px solid var(--line);
+  border-top: 2px solid var(--line);
   color: var(--muted);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .muted {
@@ -230,17 +406,36 @@ a {
 
 @media (max-width: 980px) {
   .wrap {
-    padding: 20px 16px;
+    padding: 22px 16px;
+  }
+
+  .hero {
+    grid-template-columns: minmax(0, 1fr) 236px;
   }
 
   .hero h1 {
-    font-size: 38px;
+    font-size: clamp(58px, 12vw, 114px);
   }
 }
 
 @media (max-width: 760px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .weatherCard,
+  .spotifyCard {
+    margin-top: 12px;
+    width: 100%;
+    box-shadow: 4px 4px 0 #17181d;
+  }
+
   .hero h1 {
-    font-size: 34px;
+    font-size: clamp(46px, 14vw, 82px);
+  }
+
+  .lede {
+    font-size: 17px;
   }
 }
 
@@ -252,5 +447,14 @@ a {
   .wrapTransition {
     opacity: 1;
     transform: none;
+  }
+
+  .heroName {
+    animation: none;
+  }
+
+  .weatherCard,
+  .spotifyCard {
+    animation: none;
   }
 }
