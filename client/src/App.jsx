@@ -157,7 +157,19 @@ export default function App() {
       <main className={`wrap${isTransitioning ? " wrapTransition" : ""}`}>
         <section className="hero">
           <div className="heroMain">
-            <h1 className="heroName">Chris Mulia</h1>
+            <h1 className="heroName">
+              {"Chris".split("").map((char, i) => (
+                <span key={i} className="heroChar" style={{ "--i": i }}>
+                  {char}
+                </span>
+              ))}
+              <br />
+              {"Mulia".split("").map((char, i) => (
+                <span key={5 + i} className="heroChar" style={{ "--i": 5 + i }}>
+                  {char}
+                </span>
+              ))}
+            </h1>
             <p className="lede">
               I build small apps and simple systems that make life easier
             </p>
@@ -228,6 +240,28 @@ export default function App() {
           </div>
         </section>
 
+        <section id="about" className="section">
+          <div className="sectionHead">
+            <h2>About</h2>
+          </div>
+
+          <div className="about">
+            <p>
+              I primarily work on Audio-Visual that involves operating & designing workflows/systems for events, recording & streaming ie. Q-SYS, BMD, etc. I'm also interested in blockchain tech & crypto itself. When I'm not building, you can find me on Spotify as Final Sushi, making chill instrumentals primarily and collaborate with friends.
+
+            </p>
+
+            <div className="skills">
+              <span className="skill">Audio-Visual</span>
+              <span className="skill">Design</span>
+              <span className="skill">Workflow</span>
+              <span className="skill">Systems</span>
+              <span className="skill">Blockchain</span>
+              <span className="skill">Music</span>
+            </div>
+          </div>
+        </section>
+
         <section id="work" className="section">
           <div className="sectionHead">
             <h2>Selected work</h2>
@@ -237,28 +271,6 @@ export default function App() {
             {projects.map((p) => (
               <Project key={p.title} title={p.title} desc={p.desc} />
             ))}
-          </div>
-        </section>
-
-        <section id="about" className="section">
-          <div className="sectionHead">
-            <h2>About</h2>
-          </div>
-
-          <div className="about">
-            <p>
-              Based in Sydney. I work across events, recording, and streaming.
-              
-            </p>
-
-            <div className="skills">
-              <span className="skill">Recording</span>
-              <span className="skill">Streaming</span>
-              <span className="skill">Workflow</span>
-              <span className="skill">React</span>
-              <span className="skill">AV Systems</span>
-              <span className="skill">Node.js</span>
-            </div>
           </div>
         </section>
 
