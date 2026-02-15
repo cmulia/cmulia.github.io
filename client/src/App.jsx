@@ -1,8 +1,7 @@
-import "./App.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { Link, NavLink, Route, Routes } from "react-router-dom";
 
-const SYDNEY_FORECAST_URL =
-  "https://api.open-meteo.com/v1/forecast?latitude=-33.8688&longitude=151.2093&daily=weather_code,temperature_2m_max,temperature_2m_min&current=temperature_2m,weather_code&timezone=Australia%2FSydney&forecast_days=1";
+const THEME_KEY = "theme-preference";
 
 const projects = [
   {
@@ -19,283 +18,217 @@ const projects = [
   },
 ];
 
-const weatherCodeMeta = {
-  0: { icon: "☀️", label: "Clear" },
-  1: { icon: "🌤️", label: "Mostly clear" },
-  2: { icon: "⛅", label: "Partly cloudy" },
-  3: { icon: "☁️", label: "Cloudy" },
-  45: { icon: "🌫️", label: "Fog" },
-  48: { icon: "🌫️", label: "Rime fog" },
-  51: { icon: "🌦️", label: "Light drizzle" },
-  53: { icon: "🌦️", label: "Drizzle" },
-  55: { icon: "🌧️", label: "Heavy drizzle" },
-  56: { icon: "🌧️", label: "Freezing drizzle" },
-  57: { icon: "🌧️", label: "Heavy freezing drizzle" },
-  61: { icon: "🌦️", label: "Light rain" },
-  63: { icon: "🌧️", label: "Rain" },
-  65: { icon: "🌧️", label: "Heavy rain" },
-  66: { icon: "🌨️", label: "Freezing rain" },
-  67: { icon: "🌨️", label: "Heavy freezing rain" },
-  71: { icon: "🌨️", label: "Light snow" },
-  73: { icon: "❄️", label: "Snow" },
-  75: { icon: "❄️", label: "Heavy snow" },
-  77: { icon: "🌨️", label: "Snow grains" },
-  80: { icon: "🌦️", label: "Rain showers" },
-  81: { icon: "🌧️", label: "Heavy showers" },
-  82: { icon: "⛈️", label: "Violent showers" },
-  85: { icon: "🌨️", label: "Snow showers" },
-  86: { icon: "🌨️", label: "Heavy snow showers" },
-  95: { icon: "⛈️", label: "Thunderstorm" },
-  96: { icon: "⛈️", label: "Storm + hail" },
-  99: { icon: "⛈️", label: "Severe storm + hail" },
-};
+function TopNav() {
+  const navClass = ({ isActive }) => (isActive ? "navLink navLinkActive" : "navLink");
 
-const getWeatherMeta = (code) => {
-  if (typeof code !== "number") return { icon: "🌤️", label: "Forecast" };
-  return weatherCodeMeta[code] || { icon: "🌤️", label: "Forecast" };
-};
-
-function Project({ title, desc }) {
   return (
-    <div className="proj">
-      <div className="projTitle">{title}</div>
-      <div className="projDesc">{desc}</div>
-    </div>
+    <nav className="topNav fade" style={{ "--delay": "100ms" }}>
+      <Link className="brand" to="/">
+        Chris Mulia
+      </Link>
+      <div className="navLinks">
+        <NavLink className={navClass} to="/work">
+          Work
+        </NavLink>
+        <NavLink className={navClass} to="/about">
+          About
+        </NavLink>
+        <NavLink className={navClass} to="/links">
+          Links
+        </NavLink>
+      </div>
+    </nav>
+  );
+}
+
+function HomePage() {
+  return (
+    <section className="splash">
+      <div className="splashInner">
+        <p className="tag fade" style={{ "--delay": "140ms" }}>
+          Portfolio
+        </p>
+        <h1 className="heroName fade" style={{ "--delay": "200ms" }}>
+          Chris Mulia
+        </h1>
+        <p className="lede fade" style={{ "--delay": "260ms" }}>
+          I build clean systems for AV, software, and creative projects.
+        </p>
+        <div className="ctaRow fade" style={{ "--delay": "320ms" }}>
+          <Link className="btn" to="/work">
+            View my work
+          </Link>
+          <Link className="btnGhost" to="/about">
+            About
+          </Link>
+          <Link className="btnGhost" to="/links">
+            Links
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PageShell({ title, children, showFooter = false }) {
+  return (
+    <section className="contentPage">
+      <TopNav />
+      <div className="section fade" style={{ "--delay": "180ms" }}>
+        <div className="sectionHead">
+          <h2>{title}</h2>
+        </div>
+        {children}
+      </div>
+      {showFooter ? (
+        <footer className="footer fade" style={{ "--delay": "300ms" }}>
+          <span>&copy; 2026 Chris Mulia</span>
+        </footer>
+      ) : null}
+    </section>
+  );
+}
+
+function AboutPage() {
+  return (
+    <PageShell title="About" showFooter>
+      <div className="about aboutFree fade" style={{ "--delay": "240ms" }}>
+        <p>
+          Hi! I am Chris, currently based in Sydney, and I primarily work on
+          audio-visual systems for events, recording, and streaming, including
+          workflow design and operations across tools like Q-SYS and BMD.
+          <br />
+          <br />I am also interested in blockchain technology, though I am
+          still learning. Outside of all these, I make chill instrumentals and
+          collab with friends as Final Sushi that you can hear on Spotify.
+        </p>
+        <div className="skills aboutSkills">
+          <span className="skill">Audio-Visual</span>
+          <span className="skill">Design</span>
+          <span className="skill">Workflow</span>
+          <span className="skill">Systems</span>
+          <span className="skill">Blockchain</span>
+          <span className="skill">Music</span>
+        </div>
+      </div>
+    </PageShell>
+  );
+}
+
+function WorkPage() {
+  return (
+    <PageShell title="Selected work">
+      <div className="projList">
+        {projects.map((project, index) => (
+          <div
+            key={project.title}
+            className="proj fade"
+            style={{ "--delay": `${230 + index * 60}ms` }}
+          >
+            <div className="projTitle">{project.title}</div>
+            <div className="projDesc">{project.desc}</div>
+          </div>
+        ))}
+      </div>
+    </PageShell>
+  );
+}
+
+function LinksPage() {
+  return (
+    <PageShell title="Links">
+      <div className="linksRow fade" style={{ "--delay": "240ms" }}>
+        <a className="link" href="#">
+          GitHub
+        </a>
+        <a className="link" href="#">
+          LinkedIn
+        </a>
+        <a className="link" href="#">
+          YouTube
+        </a>
+      </div>
+    </PageShell>
   );
 }
 
 export default function App() {
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [weatherState, setWeatherState] = useState({
-    loading: true,
-    error: false,
-    current: null,
-    today: null,
-  });
-  const transitionTimer = useRef(null);
-  const scrollTimer = useRef(null);
+  const [theme, setTheme] = useState("dark");
+  const [isManualTheme, setIsManualTheme] = useState(false);
 
   useEffect(() => {
-    return () => {
-      if (transitionTimer.current) window.clearTimeout(transitionTimer.current);
-      if (scrollTimer.current) window.clearTimeout(scrollTimer.current);
-    };
-  }, []);
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const storedTheme = window.localStorage.getItem(THEME_KEY);
 
-  useEffect(() => {
-    const controller = new AbortController();
+    if (storedTheme === "light" || storedTheme === "dark") {
+      setTheme(storedTheme);
+      setIsManualTheme(true);
+    } else {
+      setTheme(mediaQuery.matches ? "dark" : "light");
+    }
 
-    const fetchWeather = async () => {
-      try {
-        const response = await fetch(SYDNEY_FORECAST_URL, {
-          signal: controller.signal,
-        });
-        if (!response.ok) throw new Error("Weather request failed");
-        const data = await response.json();
-
-        const daily = data.daily || {};
-        const current = data.current || {};
-        const today = {
-          code: daily.weather_code?.[0],
-          max: daily.temperature_2m_max?.[0],
-          min: daily.temperature_2m_min?.[0],
-        };
-
-        setWeatherState({
-          loading: false,
-          error: false,
-          current: {
-            temp: current.temperature_2m,
-            code: current.weather_code,
-          },
-          today,
-        });
-      } catch (error) {
-        if (error.name === "AbortError") return;
-        setWeatherState({
-          loading: false,
-          error: true,
-          current: null,
-          today: null,
-        });
+    const handleSystemThemeChange = (event) => {
+      if (!isManualTheme) {
+        setTheme(event.matches ? "dark" : "light");
       }
     };
 
-    fetchWeather();
-    return () => controller.abort();
-  }, []);
+    mediaQuery.addEventListener("change", handleSystemThemeChange);
+    return () => mediaQuery.removeEventListener("change", handleSystemThemeChange);
+  }, [isManualTheme]);
 
-  const jumpWithTransition = (event, targetId) => {
-    event.preventDefault();
-    const target = document.getElementById(targetId);
-    if (!target) return;
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
 
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
-    if (reduceMotion) {
-      target.scrollIntoView({ behavior: "auto", block: "start" });
-      return;
-    }
-
-    if (transitionTimer.current) window.clearTimeout(transitionTimer.current);
-    if (scrollTimer.current) window.clearTimeout(scrollTimer.current);
-
-    setIsTransitioning(true);
-    scrollTimer.current = window.setTimeout(() => {
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 80);
-
-    transitionTimer.current = window.setTimeout(() => {
-      setIsTransitioning(false);
-    }, 280);
+  const toggleTheme = () => {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+    setTheme(nextTheme);
+    setIsManualTheme(true);
+    window.localStorage.setItem(THEME_KEY, nextTheme);
   };
 
   return (
     <div className="page">
-      <main className={`wrap${isTransitioning ? " wrapTransition" : ""}`}>
-        <section className="hero">
-          <div className="heroMain">
-            <h1 className="heroName">
-              {"Chris".split("").map((char, i) => (
-                <span key={i} className="heroChar" style={{ "--i": i }}>
-                  {char}
-                </span>
-              ))}
-              <br />
-              {"Mulia".split("").map((char, i) => (
-                <span key={5 + i} className="heroChar" style={{ "--i": 5 + i }}>
-                  {char}
-                </span>
-              ))}
-            </h1>
-            <p className="lede">
-              I build small apps and simple systems that make life easier
-            </p>
-
-            <div className="ctaRow">
-              <a
-                className="btn"
-                href="#work"
-                onClick={(event) => jumpWithTransition(event, "work")}
-              >
-                View work
-              </a>
-              <a
-                className="btnGhost"
-                href="#links"
-                onClick={(event) => jumpWithTransition(event, "links")}
-              >
-                My links
-              </a>
-            </div>
-
-            <div className="divider" />
-          </div>
-
-          <div className="heroRail">
-            <aside className="weatherCard" aria-label="Sydney weather forecast">
-              {weatherState.loading || weatherState.error ? (
-                <>
-                  <div className="weatherTitle">Sydney Today</div>
-                  <div className="weatherNow">--</div>
-                  <div className="weatherRange">-- / --</div>
-                </>
-              ) : (
-                <>
-                  <div className="weatherTitle">Sydney Today</div>
-                  <div className="weatherNowWrap">
-                    <span className="weatherNowIcon" aria-hidden="true">
-                      {getWeatherMeta(weatherState.current?.code).icon}
-                    </span>
-                    <span className="weatherNowTemp">
-                      {Math.round(weatherState.current?.temp ?? 0)}°
-                    </span>
-                  </div>
-                  <div className="weatherDesc">
-                    {getWeatherMeta(weatherState.current?.code).label}
-                  </div>
-                  <div className="weatherRange">
-                    H {Math.round(weatherState.today?.max ?? 0)}° / L{" "}
-                    {Math.round(weatherState.today?.min ?? 0)}°
-                  </div>
-                </>
-              )}
-            </aside>
-
-            <aside className="spotifyCard" aria-label="Spotify featured song">
-              <div className="spotifyTitle">Now Playing</div>
-              <div className="spotifyTrack">Holiday</div>
-              <div className="spotifyArtist">Final Sushi</div>
-              <a
-                className="spotifyLink"
-                href="https://open.spotify.com/track/78Z0QizUKErGo1D6xFIfw1?si=26b2245d2a364843"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Open in Spotify ↗
-              </a>
-            </aside>
-          </div>
-        </section>
-
-        <section id="about" className="section">
-          <div className="sectionHead">
-            <h2>About</h2>
-          </div>
-
-          <div className="about">
-            <p>
-              I primarily work on Audio-Visual that involves operating & designing workflows/systems for events, recording & streaming ie. Q-SYS, BMD, etc. I'm also interested in blockchain tech & crypto itself. When I'm not building, you can find me on Spotify as Final Sushi, making chill instrumentals primarily and collaborate with friends.
-
-            </p>
-
-            <div className="skills">
-              <span className="skill">Audio-Visual</span>
-              <span className="skill">Design</span>
-              <span className="skill">Workflow</span>
-              <span className="skill">Systems</span>
-              <span className="skill">Blockchain</span>
-              <span className="skill">Music</span>
-            </div>
-          </div>
-        </section>
-
-        <section id="work" className="section">
-          <div className="sectionHead">
-            <h2>Selected work</h2>
-          </div>
-
-          <div className="projList">
-            {projects.map((p) => (
-              <Project key={p.title} title={p.title} desc={p.desc} />
-            ))}
-          </div>
-        </section>
-
-        <section id="links" className="section">
-          <div className="sectionHead">
-            <h2>Links</h2>
-          </div>
-
-          <div className="linksRow">
-            <a className="link" href="#">
-              GitHub ↗
-            </a>
-            <a className="link" href="#">
-              LinkedIn ↗
-            </a>
-            <a className="link" href="#">
-              YouTube ↗
-            </a>
-          </div>
-        </section>
-
-        <footer className="footer">
-          <span>© {new Date().getFullYear()} Chris Mulia</span>
-          <span className="muted">Built with Node.js & React</span>
-        </footer>
+      <button
+        className="themeToggle"
+        type="button"
+        onClick={toggleTheme}
+        aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          width="18"
+          height="18"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <circle cx="12" cy="12" r="4.2" fill="currentColor" />
+          <g
+            stroke="currentColor"
+            strokeWidth="1.7"
+            strokeLinecap="round"
+            fill="none"
+          >
+            <line x1="12" y1="1.8" x2="12" y2="5" />
+            <line x1="12" y1="19" x2="12" y2="22.2" />
+            <line x1="1.8" y1="12" x2="5" y2="12" />
+            <line x1="19" y1="12" x2="22.2" y2="12" />
+            <line x1="4.8" y1="4.8" x2="7.1" y2="7.1" />
+            <line x1="16.9" y1="16.9" x2="19.2" y2="19.2" />
+            <line x1="16.9" y1="7.1" x2="19.2" y2="4.8" />
+            <line x1="4.8" y1="19.2" x2="7.1" y2="16.9" />
+          </g>
+        </svg>
+      </button>
+      <main className="wrap">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/work" element={<WorkPage />} />
+          <Route path="/links" element={<LinksPage />} />
+          <Route path="*" element={<HomePage />} />
+        </Routes>
       </main>
     </div>
   );
